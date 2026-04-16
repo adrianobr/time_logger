@@ -5,7 +5,7 @@ Redmine::Plugin.register :time_logger do
   name 'Time Logger'
   author 'Jérémie Delaitre, Jim McAleer, Dmitry Makurin'
   description 'Time logger is a Redmine plugin to ease time tracking when working on an issue'
-  url 'https://github.com/red-soft-ru/time_logger'
+  url 'https://github.com/johnjeffersoncm/time_logger'
   version '2026.04.0'
 
   requires_redmine version_or_higher: '4.0.0'
