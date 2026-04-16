@@ -1,59 +1,188 @@
-.icon-clock { background-image: url(../images/colorized/clock.gif); }
-.icon-start { background-image: url(../images/colorized/time_start.png); }
-.icon-pause { background-image: url(../images/colorized/time_pause.png); }
-.icon-stop { background-image: url(../images/colorized/time_stop.png); }
-
-.icon-action {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center left;
-    width: 100%;
-    height: 0;
-    padding-left: 12px;
-}
-.icon-action:hover { cursor: pointer; }
-
-.time-not-running {
-    background-image: url(../images/colorized/time.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center left;
-    padding-left: 14px;
-    cursor: default;
-}
-
-a#time-logger-menu {
-    cursor: default;
-    text-decoration: none;
-}
-
-span#time-logger-menu > a { margin-right: 4px; }
-span#time-logger-issue-id { margin-left: 4px; }
-
-.icon-start-action { background-image: url(../images/colorized/start.png); }
-.icon-pause-action { background-image: url(../images/colorized/pause.png); }
-.icon-stop-action { background-image: url(../images/colorized/stop.png); }
-.icon-list-action {
-    background-image: url(../images/colorized/list.png);
-    margin: 0 !important;
-}
-
-div#tl-timer-wrapper {
-    display: inline-flex;
-    margin: 0 10px 0 2px;
-}
-/* use the one below if you want the time logger in the bottom oon it's own
-#time-logger-menu { position:fixed; bottom:0px; right:8px; background:black; padding:1em; }
+/*
+  Modernization of the time_logger plugin for Redmine - v0.16
+  - SPECIFICITY FIX: Increased selector weight to outrank "Bleuclair" theme rules.
+  - ANIMATION LOCK FIX: Applied !important to the 'animation' property itself to prevent theme overrides, 
+    while keeping keyframe colors standard to allow smooth transitions.
+  - RENAMED KEYFRAMES: Used unique names to bypass any potential browser/theme caching.
+  - Maintained 16px height and English comments.
 */
 
+/* --- 0. Unique Animations --- */
+
+@keyframes tl-pulse-idle-red {
+    from { 
+        background-color: #f8d7da; 
+        border-color: #f5c2c7;
+    }
+    to { 
+        background-color: #e24b59; 
+        border-color: #ea868f;
+        box-shadow: 0 0 5px 1px rgba(220, 53, 69, 0.4); 
+    }
+}
+
+@keyframes tl-pulse-paused-yellow {
+    from { 
+        background-color: #fff3cd; 
+        border-color: #ffecb5;
+    }
+    to { 
+        background-color: #ecc037; 
+        border-color: #ffc107;
+        box-shadow: 0 0 5px 1px rgba(255, 193, 7, 0.5); 
+    }
+}
+
+@keyframes tl-shine-running-green {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+/* --- 1. Base Reset --- */
+.icon-action {
+    width: auto;
+    height: auto;
+    padding-left: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* --- 2. Main Container (High Specificity Block) --- */
+
+/* We use a long selector chain to guarantee dominance over the theme.
+   The base state is Red.
+*/
+html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu {
+    border-radius: 5px !important; 
+    display: inline-flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important; 
+    color: #1a202c !important; 
+    text-decoration: none !important;
+    height: 16px !important;
+    transition: transform 0.2s ease;
+    background-image: none;
+    
+    /* DEFAULT STATE: Idle Red */
+    background-color: #f8d7da; 
+    border: 1px solid #f5c2c7;
+    /* !important here ensures the theme doesn't block the animation start */
+    animation: tl-pulse-idle-red 1s infinite alternate ease-in-out !important; 
+}
+
+/* Hover effect */
+html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:hover {
+    animation-play-state: paused !important; 
+    filter: brightness(0.9);
+}
+
+/* --- Dynamic State Overrides --- */
+
+/* RUNNING STATE (Green) */
+html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:has(.icon-pause-action) {
+    background-color: #d1e7dd;
+    background-image: linear-gradient(110deg, #d1e7dd 20%, #a8d5c2 40%, #a8d5c2 60%, #d1e7dd 80%) !important;
+    background-size: 200% auto !important;
+    border: 1px solid #badbcc;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); 
+    animation: tl-shine-running-green 2.5s infinite linear !important; 
+}
+
+/* PAUSED STATE (Yellow) */
+html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:has(#tl-timer-wrapper):has(.icon-start-action) {
+    background-color: #fff3cd; 
+    background-image: none !important; 
+    border: 1px solid #ffecb5;
+    animation: tl-pulse-paused-yellow 1s infinite alternate ease-in-out !important; 
+}
+
+/* Force dark text color for spans */
+#top-menu a#time-logger-menu.time-logger-menu span {
+    color: #1a202c !important;
+}
+
+/* --- 3. Texts with Icons --- */
+a.icon-action.icon-clock {
+    background-image: url(../images/colorized/clock.gif);
+    background-repeat: no-repeat;
+    background-size: 11px; 
+    background-position: left center;
+    padding-left: 15px; 
+    margin-right: 6px;
+    font-weight: 600;
+}
+
+a.icon.icon-start.icon-action {
+    background-image: url(../images/colorized/start.png);
+    background-repeat: no-repeat;
+    background-size: 11px;
+    background-position: left center;
+    padding-left: 15px; 
+    font-weight: bold;
+}
+
+.time-not-running {
+    font-weight: 600;
+    cursor: default;
+    padding-right: 4px;
+}
+
+/* --- 4. Clock / Timer --- */
+div#tl-timer-wrapper {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 6px;
+    font-family: monospace;
+    font-size: 1.05em;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* --- 5. Simple Action Buttons (Pause, Stop, Play, List) --- */
+a.icon-pause-action,
+a.icon-stop-action,
+a.icon-start-action,
+a.icon-list-action {
+    display: inline-block; 
+    width: 14px; 
+    height: 14px;
+    background-repeat: no-repeat;
+    background-size: 9px; 
+    background-position: center;
+    padding: 0;
+    margin: 0 2px;
+    border-radius: 3px; 
+    opacity: 0.75;
+    vertical-align: middle;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Image mapping */
+a.icon-pause-action { background-image: url(../images/colorized/pause.png); }
+a.icon-stop-action  { background-image: url(../images/colorized/stop.png); }
+a.icon-start-action { background-image: url(../images/colorized/start.png); }
+a.icon-list-action  { background-image: url(../images/colorized/list.png); margin-left: 4px; }
+
+/* Action Hover Effects */
+a.icon-pause-action:hover,
+a.icon-stop-action:hover,
+a.icon-start-action:hover,
+a.icon-list-action:hover {
+    opacity: 1;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1); 
+    transform: scale(1.2) translateY(-1px); 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15); 
+}
+
+/* --- 6. Legacy & Admin Panel --- */
+#time-logger-admin { width: 100%; border-collapse: collapse; margin-top: 15px; }
+#time-logger-admin th, #time-logger-admin td { padding: 8px; border-bottom: 1px solid #eee; }
 #time-logger-admin td.start-date, #time-logger-admin td.spent-time, #time-logger-admin td.msg { text-align: center; }
 #time-logger-admin td.user, #time-logger-admin td.issue { text-align: left; }
-#time-logger-admin p.msg { text-align: center; }
-
+#time-logger-admin p.msg { text-align: center; padding: 10px; color: #666; }
 #status-transition-list { margin-bottom: 10px; }
-#status-transition-list td.zombie { font-style: italic; }
+#status-transition-list td.zombie { font-style: italic; color: #888; }
 #status-transition-list td.msg { text-align: center; }
-
 #settings form[action="/settings/plugin/time_logger"] > div + div { display: none }
-
-/* Hack to remove the div opened by redmine before rendering the plugin settings partial */
+/* v0.16 time_logger.css */
