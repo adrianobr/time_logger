@@ -3,13 +3,21 @@
   <% embed = escape_javascript((render :partial => 'time_loggers/embed_menu').delete("\n").strip) %>
   <% list  = escape_javascript((render :partial => 'time_loggers/embed_menu_list').delete("\n").strip) %>
   <%#
-    #time-logger-menu is the account-menu <a> from Redmine. Only non-anchor content may go inside it.
-    The "Listar" link is rendered as the next sibling (_embed_menu_list) so HTML stays valid.
+    Redmine regista o item como <a id="time-logger-menu">. Injetar <a> (Iniciar, Listar, etc.) dentro
+    disso é HTML inválido — o browser "abre" o <a> exterior e duplica texto/linhas no .drdn-items.
+    Substituímos por <span id="time-logger-menu"> com as mesmas classes; o tema Evolution continua a
+    estilizar a linha; _start.js.erb continua a usar #time-logger-menu.
   %>
     <%= javascript_tag "jQuery(document).ready(function($){
     var $m = $('#time-logger-menu');
     if (!$m.length) return;
     $m.next('a.time-logger-list').remove();
+    if ($m.prop('tagName') === 'A') {
+      var cls = ($m.attr('class') || '').trim();
+      var $span = $('<span></span>').attr({ id: 'time-logger-menu', 'class': cls + ' tl-menu-root', role: 'group' });
+      $m.replaceWith($span);
+      $m = $('#time-logger-menu');
+    }
     $m.html('#{embed}');
     var list = '#{list}';
     if (list) { $m.after(list); }

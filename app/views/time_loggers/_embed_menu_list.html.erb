@@ -1,5 +1,5 @@
 <% if User.current.allowed_to?(:log_time, nil, :global => true) || User.current.allowed_to?(:view_others_time_loggers, nil, :global => true) %>
 <%= link_to(l(:list_time_loggers), time_logger_index_path,
-            :class => 'icon time-logger-list',
+            :class => 'time-logger-list',
             :title => l(:list_time_loggers)) %>
 <% end %>

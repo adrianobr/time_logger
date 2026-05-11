@@ -52,7 +52,7 @@
 /* We use a long selector chain to guarantee dominance over the theme.
    The base state is Red.
 */
-html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu {
+html body #wrapper #top-menu #account ul li #time-logger-menu.time-logger-menu {
     border-radius: 5px !important; 
     display: inline-flex !important;
     align-items: center !important;
@@ -71,7 +71,7 @@ html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu 
 }
 
 /* Hover effect */
-html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:hover {
+html body #wrapper #top-menu #account ul li #time-logger-menu.time-logger-menu:hover {
     animation-play-state: paused !important; 
     filter: brightness(0.9);
 }
@@ -79,7 +79,7 @@ html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:
 /* --- Dynamic State Overrides --- */
 
 /* RUNNING STATE (Green) */
-html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:has(.icon-pause-action) {
+html body #wrapper #top-menu #account ul li #time-logger-menu.time-logger-menu:has(.icon-pause-action) {
     background-color: #d1e7dd;
     background-image: linear-gradient(110deg, #d1e7dd 20%, #a8d5c2 40%, #a8d5c2 60%, #d1e7dd 80%) !important;
     background-size: 200% auto !important;
@@ -89,7 +89,7 @@ html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:
 }
 
 /* PAUSED STATE (Yellow) */
-html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:has(#tl-timer-wrapper):has(.icon-start-action) {
+html body #wrapper #top-menu #account ul li #time-logger-menu.time-logger-menu:has(#tl-timer-wrapper):has(.icon-start-action) {
     background-color: #fff3cd; 
     background-image: none !important; 
     border: 1px solid #ffecb5;
@@ -97,7 +97,7 @@ html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:
 }
 
 /* Force dark text color for spans */
-#top-menu a#time-logger-menu.time-logger-menu span {
+#top-menu #time-logger-menu.time-logger-menu span {
     color: #1a202c !important;
 }
 
@@ -113,15 +113,15 @@ a.icon-action.icon-clock {
     font-weight: 600;
 }
 
-/* "Iniciar #123" dentro do menu de conta / dropdown */
-a.icon.icon-start.icon-action.tl-menu-start,
-#time-logger-menu.time-logger-menu a.tl-menu-start,
-.drdn-items a.icon.icon-start.icon-action.tl-menu-start {
+/* "Iniciar #123" dentro de #time-logger-menu (span) ou em contexto dropdown */
+#time-logger-menu.time-logger-menu a.time-logger-start,
+.drdn-items a.time-logger-start,
+a.icon-start.icon-action.time-logger-start {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%2315803d' d='M4.5 3.5L13 8 4.5 12.5z'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
     background-size: 12px 12px !important;
     background-position: left center !important;
-    padding-left: 18px !important;
+    padding-left: 1.15rem !important;
     min-height: 1.1em;
     font-weight: bold;
 }
@@ -135,13 +135,12 @@ a.icon.icon-start.icon-action.tl-menu-start,
 }
 
 /* Relógio "Nada em execução" (menu conta / Evolution .drdn-items) */
-a#time-logger-menu.time-logger-menu .tl-idle-clock,
 #time-logger-menu.time-logger-menu .tl-idle-clock {
     display: inline-block;
     flex-shrink: 0;
     width: 12px;
     height: 12px;
-    margin-right: 6px;
+    margin-right: 0.35rem;
     vertical-align: middle;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
@@ -149,20 +148,73 @@ a#time-logger-menu.time-logger-menu .tl-idle-clock,
     background-position: center !important;
 }
 
-/* "Listar" no menu de conta — mesmo padrão que icon my-account / time-logger-menu */
-html body #wrapper #top-menu #account ul li a.icon.time-logger-list,
-a.icon.time-logger-list {
+/* "Listar" — o tema acrescenta .icon; não repetir padding extra em cima do gutter do tema */
+html body #wrapper #top-menu #account ul li a.time-logger-list,
+a.time-logger-list {
     display: inline-flex !important;
     align-items: center !important;
     width: auto !important;
     height: auto !important;
-    padding-left: 18px !important;
-    margin: 0 2px !important;
+    margin: 0 !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23374151' d='M2 3.5h12v2H2zm0 4h8v2H2zm0 4h10v2H2z'/%3E%3C/svg%3E"),
         url("../images/colorized/list.png") !important;
     background-repeat: no-repeat !important;
     background-size: 12px 12px !important;
     background-position: left center !important;
+    padding-left: 1.15rem !important;
+}
+
+/* Evolution / Revo: alinhar com .drdn-items > a.icon (utilizador, minha conta, sair) */
+.revo-user-menu .drdn-items > #time-logger-menu.time-logger-menu,
+.revo-user-menu .drdn-items > span#time-logger-menu.time-logger-menu {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 0.35rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0.5rem 0.65rem !important;
+    text-align: left !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    cursor: default !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+.revo-user-menu .drdn-items > #time-logger-menu.time-logger-menu a.time-logger-start {
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0.2rem 0 0.2rem 1.15rem !important;
+    background-color: transparent !important;
+    border: none !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+
+.revo-user-menu .drdn-items a.time-logger-list {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0.5rem 0.65rem 0.5rem 1.85rem !important;
+    min-height: 0 !important;
+    background-size: 12px 12px !important;
+    background-position: 0.65rem center !important;
+    background-repeat: no-repeat !important;
 }
 
 /* --- 4. Clock / Timer --- */
