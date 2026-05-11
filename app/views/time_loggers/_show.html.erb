@@ -3,7 +3,8 @@
   <%= content_tag(:span, %{##{@time_logger.issue_id}}, :id => 'time-logger-issue-id') %>
 <% end %>
 
-<%= content_tag(:div, nil, :id => 'tl-timer-wrapper') do %>
+<%# span em vez de div: o menu é <span id="time-logger-menu">; div dentro de span é inválido e o browser reparte o DOM. %>
+<%= content_tag(:span, nil, :id => 'tl-timer-wrapper', :class => 'tl-timer-wrapper') do %>
   <%= content_tag(:span, "%02d" % @time_logger.total_time[:hours], :id => 'hour') %>:
   <%= content_tag(:span, "%02d" % @time_logger.total_time[:minutes], :id => 'min') %>:
   <%= content_tag(:span, "%02d" % @time_logger.total_time[:seconds], :id => 'sec') %>
