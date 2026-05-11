@@ -14,16 +14,43 @@ class TimeLoggersController < ApplicationController
   end
 
   def start
-    head :bad_request and return if params[:issue_id].nil? || TimeLogger.exists?(:user_id => User.current.id)
+    issue_id = params[:issue_id].presence
 
-    @time_logger = TimeLogger.new(:issue_id => params[:issue_id])
+    if issue_id.nil?
+      respond_to do |format|
+        format.html do
+          flash[:error] = l(:start_time_logger_error)
+          redirect_back_or_default issues_path
+        end
+        format.js { head :bad_request }
+      end
+      return
+    end
+
+    if TimeLogger.exists?(:user_id => User.current.id)
+      respond_to do |format|
+        format.html do
+          flash[:warning] = l(:time_logger_already_running_error)
+          redirect_to issue_path(issue_id)
+        end
+        format.js { head :bad_request }
+      end
+      return
+    end
+
+    @time_logger = TimeLogger.new(:issue_id => issue_id)
     @time_logger.started_on = Time.current
 
     respond_to do |format|
       if @time_logger.save
-        format.js {render :partial => 'time_loggers/start'}
+        format.js { render :partial => 'time_loggers/start' }
+        format.html { redirect_to issue_path(@time_logger.issue_id) }
       else
-        head :internal_server_error
+        format.js { head :internal_server_error }
+        format.html do
+          flash[:error] = l(:start_time_logger_error)
+          redirect_to issue_path(issue_id)
+        end
       end
     end
   end
