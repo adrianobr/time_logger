@@ -9,7 +9,7 @@
     <%= javascript_tag "jQuery(document).ready(function($){
     var $m = $('#time-logger-menu');
     if (!$m.length) return;
-    $m.next('a.time-logger-list-link').remove();
+    $m.next('a.time-logger-list').remove();
     $m.html('#{embed}');
     var list = '#{list}';
     if (list) { $m.after(list); }

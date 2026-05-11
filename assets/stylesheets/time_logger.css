@@ -101,23 +101,28 @@ html body #wrapper #top-menu #account ul li a#time-logger-menu.time-logger-menu:
     color: #1a202c !important;
 }
 
-/* --- 3. Texts with Icons --- */
+/* --- 3. Texts with Icons (SVG em data URI — visível mesmo sem assets/images no plugin) --- */
 a.icon-action.icon-clock {
-    background-image: url(../images/colorized/clock.gif);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E"),
+        url("../images/colorized/clock.gif");
     background-repeat: no-repeat;
-    background-size: 11px; 
+    background-size: 11px;
     background-position: left center;
-    padding-left: 15px; 
+    padding-left: 15px;
     margin-right: 6px;
     font-weight: 600;
 }
 
-a.icon.icon-start.icon-action {
-    background-image: url(../images/colorized/start.png);
-    background-repeat: no-repeat;
-    background-size: 11px;
-    background-position: left center;
-    padding-left: 15px; 
+/* "Iniciar #123" dentro do menu de conta / dropdown */
+a.icon.icon-start.icon-action.tl-menu-start,
+#time-logger-menu.time-logger-menu a.tl-menu-start,
+.drdn-items a.icon.icon-start.icon-action.tl-menu-start {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%2315803d' d='M4.5 3.5L13 8 4.5 12.5z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-size: 12px 12px !important;
+    background-position: left center !important;
+    padding-left: 18px !important;
+    min-height: 1.1em;
     font-weight: bold;
 }
 
@@ -129,26 +134,34 @@ a.icon.icon-start.icon-action {
     padding-right: 4px;
 }
 
-/* Clock glyph when idle ("Nada em execução") — avoids invalid nested <a> for theme menus */
-a#time-logger-menu.time-logger-menu .tl-idle-clock {
+/* Relógio "Nada em execução" (menu conta / Evolution .drdn-items) */
+a#time-logger-menu.time-logger-menu .tl-idle-clock,
+#time-logger-menu.time-logger-menu .tl-idle-clock {
     display: inline-block;
     flex-shrink: 0;
-    width: 11px;
-    height: 11px;
-    margin-right: 5px;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
     vertical-align: middle;
-    background: url(../images/colorized/clock.gif) no-repeat center / 11px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-size: 12px 12px !important;
+    background-position: center !important;
 }
 
-/* List link is a sibling of #time-logger-menu in account dropdown themes */
-html body #wrapper #top-menu #account ul li a.time-logger-list-link.icon-list-action {
+/* "Listar" no menu de conta — mesmo padrão que icon my-account / time-logger-menu */
+html body #wrapper #top-menu #account ul li a.icon.time-logger-list,
+a.icon.time-logger-list {
     display: inline-flex !important;
     align-items: center !important;
     width: auto !important;
     height: auto !important;
-    padding-left: 15px !important;
+    padding-left: 18px !important;
     margin: 0 2px !important;
-    background-size: 9px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23374151' d='M2 3.5h12v2H2zm0 4h8v2H2zm0 4h10v2H2z'/%3E%3C/svg%3E"),
+        url("../images/colorized/list.png") !important;
+    background-repeat: no-repeat !important;
+    background-size: 12px 12px !important;
     background-position: left center !important;
 }
 
@@ -166,8 +179,7 @@ div#tl-timer-wrapper {
 /* --- 5. Simple Action Buttons (Pause, Stop, Play, List) --- */
 a.icon-pause-action,
 a.icon-stop-action,
-a.icon-start-action,
-a.icon-list-action {
+a.icon-start-action {
     display: inline-block; 
     width: 14px; 
     height: 14px;
@@ -186,13 +198,11 @@ a.icon-list-action {
 a.icon-pause-action { background-image: url(../images/colorized/pause.png); }
 a.icon-stop-action  { background-image: url(../images/colorized/stop.png); }
 a.icon-start-action { background-image: url(../images/colorized/start.png); }
-a.icon-list-action  { background-image: url(../images/colorized/list.png); margin-left: 4px; }
 
 /* Action Hover Effects */
 a.icon-pause-action:hover,
 a.icon-stop-action:hover,
-a.icon-start-action:hover,
-a.icon-list-action:hover {
+a.icon-start-action:hover {
     opacity: 1;
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1); 
