@@ -16,6 +16,6 @@
 
 <% if User.current.allowed_to?(:log_time, nil, :global => true) || User.current.allowed_to?(:view_others_time_loggers, nil, :global => true) %>
   <%= content_tag(:span) do %>
-    <%= link_to('', time_logger_index_path, :class => 'icon-action icon-list-action', :title => l(:list_time_loggers)) %>
+    <%= link_to(l(:list_time_loggers), time_logger_index_path, :class => 'icon icon-action icon-list-action', :title => l(:list_time_loggers)) %>
   <% end %>
 <% end %>
