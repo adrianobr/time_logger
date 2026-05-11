@@ -122,9 +122,34 @@ a.icon.icon-start.icon-action {
 }
 
 .time-not-running {
+    display: inline-flex;
+    align-items: center;
     font-weight: 600;
     cursor: default;
     padding-right: 4px;
+}
+
+/* Clock glyph when idle ("Nada em execução") — avoids invalid nested <a> for theme menus */
+a#time-logger-menu.time-logger-menu .tl-idle-clock {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 11px;
+    height: 11px;
+    margin-right: 5px;
+    vertical-align: middle;
+    background: url(../images/colorized/clock.gif) no-repeat center / 11px;
+}
+
+/* List link is a sibling of #time-logger-menu in account dropdown themes */
+html body #wrapper #top-menu #account ul li a.time-logger-list-link.icon-list-action {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    height: auto !important;
+    padding-left: 15px !important;
+    margin: 0 2px !important;
+    background-size: 9px !important;
+    background-position: left center !important;
 }
 
 /* --- 4. Clock / Timer --- */

@@ -10,12 +10,6 @@
   <% end %>
 <% elsif User.current.allowed_to?(:log_time, nil, :global => true) %>
     <%# No time tracker is running but the user has the rights to track time on a project %>
-    <%# Display the "Not running" entry %>
-    <span class='time-not-running'><%= l(:time_logger_not_running) %>&nbsp;</span>
-<% end %>
-
-<% if User.current.allowed_to?(:log_time, nil, :global => true) || User.current.allowed_to?(:view_others_time_loggers, nil, :global => true) %>
-  <%= content_tag(:span) do %>
-    <%= link_to(l(:list_time_loggers), time_logger_index_path, :class => 'icon icon-action icon-list-action', :title => l(:list_time_loggers)) %>
-  <% end %>
+    <%# Display the "Not running" entry (list link lives in _embed_menu_list as sibling of #time-logger-menu — never nest <a> inside <a>) %>
+    <span class='time-not-running'><span class="tl-idle-clock" aria-hidden="true"></span><%= l(:time_logger_not_running) %>&nbsp;</span>
 <% end %>

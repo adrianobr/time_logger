@@ -1,14 +1,18 @@
 <% if User.current.logged? %>
   <% @time_logger = time_logger_for(User.current) %>
+  <% embed = escape_javascript((render :partial => 'time_loggers/embed_menu').delete("\n").strip) %>
+  <% list  = escape_javascript((render :partial => 'time_loggers/embed_menu_list').delete("\n").strip) %>
   <%#
-    This script replaces the <a id="time-logger-menu">...</a> element by a span with the same id.
-    This is needed as we want several links for our time tracker menu item.
-    The span is populated with current time tracker state.
-    (no AJAX request here, this allows to have the time tracker immediately visible)
+    #time-logger-menu is the account-menu <a> from Redmine. Only non-anchor content may go inside it.
+    The "Listar" link is rendered as the next sibling (_embed_menu_list) so HTML stays valid.
   %>
     <%= javascript_tag "jQuery(document).ready(function($){
-    $('#time-logger-menu').html(
-    '<span id=\"time-logger-menu\">#{escape_javascript(((render :partial => 'time_loggers/embed_menu').delete "\n").strip)}</span>');
+    var $m = $('#time-logger-menu');
+    if (!$m.length) return;
+    $m.next('a.time-logger-list-link').remove();
+    $m.html('#{embed}');
+    var list = '#{list}';
+    if (list) { $m.after(list); }
     });"
     %>
 <% end %>
