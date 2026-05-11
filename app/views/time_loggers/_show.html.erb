@@ -1,10 +1,11 @@
-<%# show link to the logging issue %>
-<%= link_to(issue_path(@time_logger.issue_id), :method => :get, :class => 'icon-action icon-clock') do %>
-  <%= content_tag(:span, %{##{@time_logger.issue_id}}, :id => 'time-logger-issue-id') %>
+<%# Tarefa em execução (texto + ícone) %>
+<%= link_to(issue_path(@time_logger.issue_id), :method => :get, :class => 'icon-action icon-clock tl-menu-action') do %>
+  <%= content_tag(:span, "#{l(:time_logger_menu_issue)} ##{@time_logger.issue_id}", :id => 'time-logger-issue-id') %>
 <% end %>
 
 <%# span em vez de div: o menu é <span id="time-logger-menu">; div dentro de span é inválido e o browser reparte o DOM. %>
 <%= content_tag(:span, nil, :id => 'tl-timer-wrapper', :class => 'tl-timer-wrapper') do %>
+  <%= content_tag(:span, "#{l(:time_logger_menu_timer)}:", :class => 'tl-timer-label') %>
   <%= content_tag(:span, "%02d" % @time_logger.total_time[:hours], :id => 'hour') %>:
   <%= content_tag(:span, "%02d" % @time_logger.total_time[:minutes], :id => 'min') %>:
   <%= content_tag(:span, "%02d" % @time_logger.total_time[:seconds], :id => 'sec') %>
@@ -31,9 +32,9 @@
 <% end %>
 
 <%# stop button %>
-<%= link_to '',
+<%= link_to l(:time_logger_menu_stop),
             time_logger_stop_path(:id => @time_logger),
-            :class => 'icon-action icon-stop-action',
+            :class => 'icon-action icon-stop-action tl-menu-action',
             :title => l(:stop_time_logger),
             :id => 'time-logger-stop-btn',
             :onclick => 'stop_timer();'

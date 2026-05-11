@@ -1,6 +1,15 @@
 # English strings go here for Rails i18n
 pt-BR:
   start_time_logger: "Iniciar"
+  time_logger_menu_issue: "Tarefa"
+  time_logger_menu_timer: "Tempo"
+  time_logger_menu_pause: "Pausar"
+  time_logger_menu_resume: "Retomar"
+  time_logger_menu_stop: "Parar"
+  time_logger_resumed_notice: "Time tracker retomado — o tempo continua a partir do acumulado."
+  time_logger_suspended_notice: "Time tracker em pausa. Use Retomar no menu para continuar a contar."
+  time_logger_resume_invalid_notice: "O time tracker não está em pausa; não pode retomar."
+  time_logger_suspend_invalid_notice: "O time tracker já está em pausa ou não pode ser pausado."
   stop_time_logger: "Parar"
   time_logger_not_running: "Nada em execução"
   start_time_logger_error: "Falha ao iniciar o time tracker"

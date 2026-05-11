@@ -102,7 +102,7 @@ html body #wrapper #top-menu #account ul li #time-logger-menu.time-logger-menu:h
 }
 
 /* --- 3. Texts with Icons (SVG em data URI — visível mesmo sem assets/images no plugin) --- */
-a.icon-action.icon-clock {
+a.icon-action.icon-clock:not(.tl-menu-action) {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E"),
         url("../images/colorized/clock.gif");
     background-repeat: no-repeat;
@@ -229,22 +229,29 @@ span#tl-timer-wrapper {
     letter-spacing: 0.5px;
 }
 
-/* --- 5. Pause / Stop / Resume (SVG — não depende de assets/images) --- */
+/* --- 5. Pause / Stop / Resume (SVG) — ícone à esquerda + texto (.tl-menu-action) --- */
 a.icon-pause-action,
 a.icon-stop-action,
 a.icon-start-action {
+    background-repeat: no-repeat;
+    background-size: 12px 12px;
+    border-radius: 3px;
+    opacity: 0.9;
+    vertical-align: middle;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+/* Botões só-ícone (fallback) */
+a.icon-pause-action:not(.tl-menu-action),
+a.icon-stop-action:not(.tl-menu-action),
+a.icon-start-action:not(.tl-menu-action) {
     display: inline-block;
     width: 14px;
     height: 14px;
-    background-repeat: no-repeat;
     background-size: 10px;
     background-position: center;
     padding: 0;
     margin: 0 2px;
-    border-radius: 3px;
-    opacity: 0.85;
-    vertical-align: middle;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 a.icon-pause-action {
@@ -262,65 +269,109 @@ a.icon-start-action {
         url(../images/colorized/start.png) !important;
 }
 
-/* Action Hover Effects */
 a.icon-pause-action:hover,
 a.icon-stop-action:hover,
 a.icon-start-action:hover {
     opacity: 1;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.08);
-    transform: scale(1.15) translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+    background-color: rgba(0, 0, 0, 0.06);
 }
 
-/* Evolution: ícones vazios + texto escondido por regras .icon no dropdown */
-.revo-user-menu .drdn-items a.icon-action.icon-clock,
-#time-logger-menu.time-logger-menu a.icon-action.icon-clock {
-    text-indent: 0 !important;
-    color: #1a202c !important;
+/* Linhas do menu em execução: coluna, largura total, ícone + rótulo */
+#time-logger-menu.time-logger-menu:has(#tl-timer-wrapper) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.35rem !important;
+}
+
+#time-logger-menu.time-logger-menu a.tl-menu-action,
+#time-logger-menu.time-logger-menu a.icon-action.icon-clock.tl-menu-action {
     display: inline-flex !important;
     align-items: center !important;
-    min-width: 2.5rem !important;
-    min-height: 1.5rem !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 1.75rem !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0.35rem 0.4rem 0.35rem 1.55rem !important;
+    gap: 0.45rem !important;
+    text-indent: 0 !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
     font-size: inherit !important;
-    line-height: 1.3 !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E") !important;
+    font-weight: 600 !important;
+    color: #1a202c !important;
     background-repeat: no-repeat !important;
     background-size: 12px 12px !important;
-    background-position: left center !important;
-    padding-left: 1.25rem !important;
+    background-position: 0.4rem center !important;
+    text-decoration: none !important;
 }
 
-.revo-user-menu .drdn-items a.icon-action.icon-clock #time-logger-issue-id,
-#time-logger-menu.time-logger-menu a.icon-action.icon-clock #time-logger-issue-id {
+#time-logger-menu.time-logger-menu a.icon-action.icon-clock.tl-menu-action {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E") !important;
+}
+
+#time-logger-menu.time-logger-menu a.tl-menu-action #time-logger-issue-id {
     color: inherit !important;
 }
 
-.revo-user-menu .drdn-items #tl-timer-wrapper,
-#time-logger-menu.time-logger-menu #tl-timer-wrapper {
+#time-logger-menu.time-logger-menu #tl-timer-wrapper.tl-timer-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0.15rem 0 !important;
     color: #1a202c !important;
-    margin: 0 0.35rem !important;
-    font-size: 0.95em !important;
+    font-size: inherit !important;
+    font-weight: 600 !important;
 }
 
-.revo-user-menu .drdn-items a.icon-pause-action,
-.revo-user-menu .drdn-items a.icon-stop-action,
-.revo-user-menu .drdn-items a.icon-start-action,
-#time-logger-menu.time-logger-menu a.icon-pause-action,
-#time-logger-menu.time-logger-menu a.icon-stop-action,
-#time-logger-menu.time-logger-menu a.icon-start-action {
-    display: inline-flex !important;
+#time-logger-menu.time-logger-menu .tl-timer-label {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: 600 !important;
+    color: inherit !important;
+}
+
+/* Evolution / dropdown: mesmas regras quando os nós ficam como filhos directos .drdn-items */
+.revo-user-menu .drdn-items a.icon-action.icon-clock.tl-menu-action,
+.revo-user-menu .drdn-items a.tl-menu-action {
+    display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    min-width: 2rem !important;
-    min-height: 2rem !important;
-    width: 2rem !important;
-    height: 2rem !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
     box-sizing: border-box !important;
-    background-size: 12px 12px !important;
+    min-height: 1.75rem !important;
+    padding: 0.45rem 0.65rem 0.45rem 1.85rem !important;
+    gap: 0.45rem !important;
+    text-indent: 0 !important;
+    font-weight: 600 !important;
+    color: #1a202c !important;
     background-repeat: no-repeat !important;
-    background-position: center !important;
-    opacity: 1 !important;
+    background-size: 12px 12px !important;
+    background-position: 0.65rem center !important;
+}
+
+.revo-user-menu .drdn-items a.icon-action.icon-clock.tl-menu-action {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='8' cy='8' r='6.5' stroke='%23374151' stroke-width='1.25'/%3E%3Cpath stroke='%23374151' stroke-width='1.25' stroke-linecap='round' d='M8 4.5V8l3 1.5'/%3E%3C/svg%3E") !important;
+}
+
+.revo-user-menu .drdn-items #tl-timer-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    padding: 0.35rem 0.65rem !important;
+    box-sizing: border-box !important;
+    color: #1a202c !important;
+    font-weight: 600 !important;
 }
 
 /* --- 6. Legacy & Admin Panel --- */

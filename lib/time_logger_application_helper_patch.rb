@@ -37,9 +37,9 @@ module TimeLoggerApplicationHelperPatch
 
     def suspend_link(time_logger)
       link_to(
-        '',
+        l(:time_logger_menu_pause),
         time_logger_suspend_path(:id => time_logger.id),
-        :class => 'icon-action icon-pause-action',
+        :class => 'icon-action icon-pause-action tl-menu-action',
         :id => 'time-logger-suspend-btn',
         :title => l(:suspend_time_logger),
         :onclick => %{pause_timer();},
@@ -49,9 +49,9 @@ module TimeLoggerApplicationHelperPatch
 
     def resume_link(time_logger)
       link_to(
-        '',
+        l(:time_logger_menu_resume),
         time_logger_resume_path(:id => time_logger.id),
-        :class => 'icon-action icon-start-action',
+        :class => 'icon-action icon-start-action tl-menu-action',
         :id => 'time-logger-resume-btn',
         :title => l(:resume_time_logger),
         :remote => true

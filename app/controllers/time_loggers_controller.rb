@@ -56,39 +56,68 @@ class TimeLoggersController < ApplicationController
   end
 
   def resume
+    issue_id = @time_logger&.issue_id
+
     if @time_logger.try(:paused)
       @time_logger.started_on = Time.current
       @time_logger.paused = false
 
       respond_to do |format|
         if @time_logger.save
-          format.js {render :partial => 'time_loggers/resume'}
+          format.js { render partial: 'time_loggers/resume' }
+          format.html do
+            flash[:notice] = l(:time_logger_resumed_notice)
+            redirect_to issue_path(issue_id)
+          end
         else
-          format.js {head :internal_server_error}
+          format.js { head :internal_server_error }
+          format.html do
+            flash[:error] = l(:resume_time_logger_error)
+            redirect_to issue_path(issue_id)
+          end
         end
       end
     else
-      # time logger already running or not found
-      head :bad_request
+      respond_to do |format|
+        format.html do
+          flash[:warning] = l(:time_logger_resume_invalid_notice)
+          redirect_to(issue_id ? issue_path(issue_id) : issues_path)
+        end
+        format.js { head :bad_request }
+      end
     end
   end
 
   def suspend
-    # time logger is present and it is paused
+    issue_id = @time_logger&.issue_id
+
     if @time_logger.try(:paused) == false
       @time_logger.time_spent = @time_logger.seconds_spent
       @time_logger.paused = true
 
       respond_to do |format|
         if @time_logger.save
-          format.js {render :partial => 'time_loggers/suspend'}
+          format.js { render partial: 'time_loggers/suspend' }
+          format.html do
+            flash[:notice] = l(:time_logger_suspended_notice)
+            redirect_to issue_path(issue_id)
+          end
         else
-          format.js {head :internal_server_error}
+          format.js { head :internal_server_error }
+          format.html do
+            flash[:error] = l(:suspend_time_logger_error)
+            redirect_to issue_path(issue_id)
+          end
         end
       end
     else
-      # no time logger or it's not paused
-      head :bad_request
+      respond_to do |format|
+        format.html do
+          flash[:warning] = l(:time_logger_suspend_invalid_notice)
+          redirect_to(issue_id ? issue_path(issue_id) : issues_path)
+        end
+        format.js { head :bad_request }
+      end
     end
   end
 
@@ -97,19 +126,7 @@ class TimeLoggersController < ApplicationController
     hours = @time_logger.hours_spent
     @time_logger.destroy
 
-    redirect_to_new_time_entry = Setting.plugin_time_logger['redirect_to_new_time_entry']
-
-    if redirect_to_new_time_entry
-      redirect_to controller: 'timelog',
-                  action: 'new',
-                  issue_id: issue_id,
-                  time_entry: { hours: hours }
-    else
-      redirect_to controller: 'issues',
-                  action: 'edit',
-                  id: issue_id,
-                  time_entry: { hours: hours }
-    end
+    redirect_to_prefilled_issue_time_entry(issue_id, hours)
   end
 
   def delete
@@ -139,9 +156,19 @@ class TimeLoggersController < ApplicationController
     respond_to do |format|
       format.html do
         flash[:error] = l(:no_time_logger)
-        redirect_back_or_default(request.referer, :referer => true)
+        redirect_back_or_default(request.referer || issues_path)
       end
-      format.js {head :not_found}
+      format.js { head :not_found }
     end
+    throw :abort
+  end
+
+  # GET /issues/:issue_id/time_entries/new?time_entry[hours]=…
+  def redirect_to_prefilled_issue_time_entry(issue_id, hours)
+    h = hours.to_f
+    q = Rack::Utils.build_nested_query('time_entry' => { 'hours' => h })
+    r = Redmine::Utils.relative_url_root.to_s.sub(%r{\A/}, '').sub(%r{/\z}, '')
+    path = r.present? ? "/#{r}/issues/#{issue_id}/time_entries/new" : "/issues/#{issue_id}/time_entries/new"
+    redirect_to "#{path}?#{q}"
   end
 end
