@@ -50,25 +50,27 @@ function stop_timer() {
 
 // Output variable End
 function tl_timer() {
-  secOut = checkTime(seconds);
-  minOut = checkTime(minutes);
-  hourOut = checkTime(hours);
-
-  seconds = ++seconds;
-
-  if (seconds === 60) {
-    minutes = ++minutes;
+  seconds += 1;
+  if (seconds >= 60) {
     seconds = 0;
+    minutes += 1;
   }
-
-  if (minutes === 60) {
+  if (minutes >= 60) {
     minutes = 0;
-    hours = ++hours;
+    hours += 1;
   }
 
-  document.getElementById("sec").innerHTML = secOut;
-  document.getElementById("min").innerHTML = minOut;
-  document.getElementById("hour").innerHTML = hourOut;
+  var hEl = document.getElementById('hour');
+  var mEl = document.getElementById('min');
+  var sEl = document.getElementById('sec');
+  if (!hEl || !mEl || !sEl) {
+    stop_timer();
+    return;
+  }
+
+  hEl.textContent = checkTime(hours);
+  mEl.textContent = checkTime(minutes);
+  sEl.textContent = checkTime(seconds);
 }
 
 // Adds 0 when value is <10
